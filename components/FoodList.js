@@ -1,17 +1,21 @@
-import "../styles/components/foodList.module.css"
+import foodListStyles from "../styles/components/foodLists.module.css";
 import FoodItem from "./FoodItem";
-function FoodList({type, foods}) {
-  return (
-      <div>
-        <h2>{type}</h2>
+
+function FoodLists({ type, foods }) {
+    return (
         <div>
-          {foods.filter((food) => food.Type === type)
-              .map((food) => (
-                  <FoodItem key={food.Id} food={food}/>
-              ))}
+            <h2>{type}</h2>
+            <div className={foodListStyles.foodList}>
+                {foods
+                    .filter((food) => food.Type === type)
+                    .map((food) => (
+                        <div className={foodListStyles["food-list-item"]} key={food.Id}>
+                            <FoodItem food={food} />
+                        </div>
+                    ))}
+            </div>
         </div>
-      </div>
-  );
+    );
 }
 
-export default FoodList;
+export default FoodLists;

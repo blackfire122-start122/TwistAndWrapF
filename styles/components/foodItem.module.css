@@ -1,46 +1,31 @@
-.card {
-    width: 18rem;
-    margin: 1rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
-    overflow: hidden;
-    transition: transform 0.2s ease-in-out;
+.foodItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 20px;
+    cursor: pointer;
 }
 
-.card:hover {
-    transform: translateY(-0.2rem);
+.foodItem h3 {
+    margin-bottom: 5px;
 }
 
-.card img {
+.food-item img {
     width: 100%;
-    height: 15rem;
+    height: 200px;
     object-fit: cover;
+    margin-bottom: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
-.card-body {
-    padding: 1rem;
+.food-item img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
-.card-title {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
+.food-item p {
+    font-size: 16px;
+    margin-top: 10px;
 }
 
-.card-text {
-    font-size: 1rem;
-    margin-bottom: 0.5rem;
-}
-
-.btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: 0.5rem;
-    background-color: #0070f3;
-    color: #fff;
-    text-decoration: none;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.btn:hover {
-    background-color: #0366d6;
-}
