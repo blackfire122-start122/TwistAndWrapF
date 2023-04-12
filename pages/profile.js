@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import client from "../lib/axios";
 import styles from "../styles/components/Profile.module.css";
+import Link from "next/link";
 
 export default function Profile() {
     const [user, setUser] = useState(null);
@@ -57,6 +58,13 @@ export default function Profile() {
                     <button className={styles.button} onClick={handleUpdate}>Update</button>
                 </div>
             </div>
+            {
+                user.IsAdmin ? (
+                    <Link href="/createProduct">
+                        <h4>Create product</h4>
+                    </Link>
+                ) : null
+            }
         </div>
     );
 }
