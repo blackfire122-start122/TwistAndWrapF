@@ -1,0 +1,149 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width:
+            100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+}
+
+.selectedFood {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.selectedFoodItem {
+    height: 10em;
+    width: 120px;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.selectedFoodItem button {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px;
+    cursor: pointer;
+}
+
+.selectedFoodItem button:hover {
+    background-color: #3e8e41;
+}
+
+.selectedFoodItem img {
+    height: 60%;
+    border-radius: 10px;
+    object-fit: cover;
+}
+
+.selectedFoodItem p {
+    contain: content;
+    white-space: nowrap;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.search label {
+    margin-right: 10px;
+}
+
+.search input {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.search select {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-left: 10px;
+}
+
+.button {
+    background-color: #4caf50;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 5px;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    margin-bottom: 20px;
+    font-size: 16px;
+}
+
+.button:hover {
+    background-color: #3e8e41;
+}
+
+.checkboxList{
+    display: flex;
+}
+
+.imgFood{
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.imgFood img:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+}
+
+.checkboxListItem{
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.checkboxInput{
+    display: none;
+}
+
+.searchs{
+    display: flex;
+}

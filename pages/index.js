@@ -7,7 +7,6 @@ import Link from 'next/link'
 export default function Home() {
     const [user, setUser] = useState(null);
     const [foods, setFoods] = useState([]);
-    const [selectedFood, setSelectedFood] = useState(null);
     const [foodTypes, setFoodTypes] = useState([]);
 
     useEffect(() => {
@@ -33,7 +32,12 @@ export default function Home() {
     return (
         <div className={styles.container}>
             <header className={styles.header}>
-                <h1 className={styles.title}>Twist&amp;Wrap</h1>
+                <div>
+                    <h1 className={styles.title}>Twist&amp;Wrap</h1>
+                    <Link href="/orderFoodInBar">
+                        <button>Order food</button>
+                    </Link>
+                </div>
                 {
                     user ? (
                         <Link href="/profile">
