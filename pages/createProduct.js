@@ -5,6 +5,7 @@ import client from "../lib/axios";
 export default function ProductForm() {
     const [types, setTypes] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [addText, setAddText] = useState("");
     const [formData, setFormData] = useState({
         name: "",
         type: "",
@@ -44,7 +45,10 @@ export default function ProductForm() {
                 },
             })
             .then((response) => {
-                console.log(response);
+                setAddText("Add "+formData.name)
+                setTimeout(()=>{
+                    setAddText("")
+                }, 5000)
             })
             .catch((error) => {
                 console.log(error);
@@ -53,7 +57,10 @@ export default function ProductForm() {
 
     return (
         <div className={styles.container}>
-            <h1>Create Product</h1>
+            <div className={styles.leftInfo}>
+                {addText ? <span className={styles.SpanAdd}>{addText}</span>:null}
+                <h1>Create Product</h1>
+            </div>
             <form className={styles.form} onSubmit={handleSubmit}>
                 <div className={styles.formGroup}>
                     <label className={styles.labelForm} htmlFor="name">Name:</label>
