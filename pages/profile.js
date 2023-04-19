@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, } from "react";
 import client from "../lib/axios";
-import styles from "../styles/components/Profile.module.css";
+import styles from "../styles/components/profile.module.css";
 import Link from "next/link";
 
 export default function Profile() {

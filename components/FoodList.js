@@ -9,9 +9,7 @@ function FoodLists({ type, foods }) {
                 {foods
                     .filter((food) => food.Type === type)
                     .map((food) => (
-                        <div className={foodListStyles["food-list-item"]} key={food.Id}>
-                            <FoodItem food={food} />
-                        </div>
+                        <FoodItem food={food} key={food.Id}/>
                     ))}
             </div>
         </div>

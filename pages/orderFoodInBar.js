@@ -1,23 +1,29 @@
 import { useState, useEffect } from 'react';
 import client from "../lib/axios";
 import styles from '../styles/components/OrderFoodInBar.module.css';
-import { redirect } from 'next/navigation';
-import { useRouter } from 'next/navigation';
+import ReactMapboxGl, { GeoJSONLayer } from "react-mapbox-gl";
+import {console} from "next/dist/compiled/@edge-runtime/primitives/console";
+
+const Map = ReactMapboxGl({
+    accessToken: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
+});
+
 const OrderFoodInBar = () => {
     const [selectedRestaurant, setSelectedRestaurant] = useState('');
     const [selectedFood, setSelectedFood] = useState([]);
+    const [selectedTime, setSelectedTime] = useState("");
     const [restaurants, setRestaurants] = useState([]);
     const [foods, setFoods] = useState([]);
     const [searchFood, setSearchFood ] = useState([])
     const [foodTypes, setFoodTypes] = useState([]);
-    const { push } = useRouter();
+    const [addText, setAddText] = useState("");
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const selectedFoodIdCount = selectedFood.map(({ Id, Count }) => ({ Id, Count }));
 
-        if (selectedFoodIdCount === [] || !selectedRestaurant){
+        if (selectedFoodIdCount === [] || !selectedRestaurant || selectedTime === ""){
             console.log("error not all field")
             return
         }
@@ -25,10 +31,23 @@ const OrderFoodInBar = () => {
         client.post('/orderFood', {
             RestaurantId: selectedRestaurant,
             Foods: selectedFoodIdCount,
+            Time: selectedTime
         })
+
         .then((response) => {
-            console.log(response);
-            push('/profile');
+            if (response.data !== ""){
+                setSelectedRestaurant("")
+                setSelectedFood([])
+                setSelectedTime("")
+                setAddText("Ordered. Your Id: "+response.data.Msg.split(":")[1])
+
+                setTimeout(()=>{
+                    setAddText("")
+                }, 5000)
+                
+            }else {
+                console.warn(response)
+            }
         })
         .catch((error) => {
             console.error(error);
@@ -54,6 +73,9 @@ const OrderFoodInBar = () => {
     const handleSearchTermChange = (event) => {
         setSearchFood(foods.filter(f => f.Name.toLowerCase().includes(event.target.value.toLowerCase())))
     };
+    const handleTimeChange = (event) => {
+        setSelectedTime(event.target.value)
+    };
 
     const handleSearchTypeChange = (event) => {
         if (event.target.value !== ""){
@@ -64,7 +86,7 @@ const OrderFoodInBar = () => {
     };
 
     useEffect(() => {
-        client.get('/getAllBars')
+        client.get('/getAllWorkedBars')
             .then((response) => {
                 setRestaurants(response.data);
             })
@@ -88,17 +110,64 @@ const OrderFoodInBar = () => {
     return (
         <div>
             <form className={styles.form} onSubmit={handleSubmit}>
-                <label className={styles.label}>
-                    Select a restaurant:
-                    <select className={styles.select} value={selectedRestaurant} onChange={handleRestaurantChange}>
-                        <option value="">--Please choose a restaurant--</option>
-                        {restaurants.map((r) => (
-                            <option key={r.Id} value={r.IdBar}>{r.Address}</option>
-                        ))}
-                    </select>
-                </label>
+                <div className={styles.selectRestaurantAndTime}>
+                    <label className={styles.label}>
+                        Select a restaurant:
+                        <select className={styles.select} value={selectedRestaurant} onChange={handleRestaurantChange}>
+                            <option value="">--Please choose a restaurant--</option>
+                            {restaurants.map((r ) => (
+                                <option key={r.Id} value={r.IdBar}>{r.Address}</option>
+                            ))}
+                        </select>
+                    </label>
+                    <br/>
+
+                    <label className={styles.label}>
+                        Select Time:
+                        <input className={styles.input} type="time" value={selectedTime} onChange={handleTimeChange} />
+                    </label>
+                </div>
+                <br/>
+
+                <Map style="mapbox://styles/mapbox/streets-v11"
+                     containerStyle={{
+                         height: "600px",
+                         width: "100%",
+                     }}
+                     center={[31, 49]}
+                     zoom={[5]}
+                >
+                    <GeoJSONLayer
+                        id="point"
+                        data={{
+                            "type": "FeatureCollection",
+                            "features": restaurants.map((r)=>{
+                                return {
+                                    "type": "Feature",
+                                    "geometry": {
+                                        "type": "Point",
+                                        "coordinates": [parseFloat(r.LngLatX), parseFloat(r.LngLatY)]
+                                    },
+                                "properties": {
+                                    "title": "My Point",
+                                    "marker-color": "#FF0000",
+                                    "marker-size": "medium",
+                                    "marker-symbol": ""
+                                }}
+                            })
+                        }}
+                        circleLayout={{ visibility: "visible" }}
+                        circlePaint={{
+                            "circle-radius": 8,
+                            "circle-color": "#FF0000"
+                        }}
+                        onClick={(e)=>{console.log(e)}}
+                    />
+                </Map>
+
                 <br />
-                <div className={styles.searchs}>
+
+                <div className={styles.searches}>
                    <label className={styles.label}>
                         Search by food type:
                         <select className={styles.select} onChange={handleSearchTypeChange}>
@@ -148,6 +217,8 @@ const OrderFoodInBar = () => {
                 </ul>
                 <button className={styles.button} type="submit">Order Food</button>
             </form>
+            {addText ? <span className={styles.SpanOrdered}>{addText}</span>:null}
+
         </div>
     );
 };

@@ -10,7 +10,7 @@
 
 .label {
     display: block;
-    margin-bottom: 5px;
+    margin: 5px;
     font-weight: bold;
 }
 
@@ -18,10 +18,9 @@
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
-    width:
-            100%;
+    width: 100%;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    height: 3em;
 }
 
 .input {
@@ -30,7 +29,7 @@
     border: 1px solid #ccc;
     width: 100%;
     box-sizing: border-box;
-    margin-bottom: 20px;
+    height: 3em;
 }
 
 .selectedFood {
@@ -144,6 +143,20 @@
     display: none;
 }
 
-.searchs{
+.searches{
     display: flex;
+    margin-top: 2em;
+}
+
+.selectRestaurantAndTime{
+    display: flex;
+}
+
+.SpanOrdered{
+    position:fixed;
+    bottom: 0;
+    right: 1%;
+    background-color: greenyellow;
+    padding:5px;
+    border-radius: 0.25rem;;
 }

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import styles from "../styles/components/Home.module.css";
+import styles from "../styles/components/home.module.css";
 import FoodLists from "../components/FoodList";
 import client from "../lib/axios";
 import Link from 'next/link'
@@ -35,7 +35,7 @@ export default function Home() {
                 <div>
                     <h1 className={styles.title}>Twist&amp;Wrap</h1>
                     <Link href="/orderFoodInBar">
-                        <button>Order food</button>
+                        <button className={styles.btnOrder}>Order food</button>
                     </Link>
                 </div>
                 {
