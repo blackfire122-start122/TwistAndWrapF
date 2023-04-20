@@ -60,9 +60,14 @@ export default function Profile() {
             </div>
             {
                 user.IsAdmin ? (
-                    <Link href="/createProduct">
-                        <h4>Create product</h4>
-                    </Link>
+                    <>
+                        <Link href="/createProduct">
+                            <h4>Create product</h4>
+                        </Link>
+                        <Link href="/registerBar">
+                            <h4>Create bar</h4>
+                        </Link>
+                    </>
                 ) : null
             }
         </div>
