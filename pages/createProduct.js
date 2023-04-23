@@ -13,7 +13,7 @@ export default function ProductForm() {
     });
 
     useEffect(() => {
-        client.get("/getTypes").then((response) => {
+        client.get("user/getTypes").then((response) => {
             setTypes(response.data);
         });
     }, []);
@@ -39,7 +39,7 @@ export default function ProductForm() {
         data.append("File", selectedFile);
 
         client
-            .post("/createProduct", data, {
+            .post("admin/createProduct", data, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
