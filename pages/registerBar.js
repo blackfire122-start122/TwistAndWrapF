@@ -36,7 +36,7 @@ export default function BarRegistrationForm() {
         };
 
         client
-            .post("admin/registerBar", data)
+            .post("/registerBar", data)
             .then((response) => {
                 setAddText("Bar registered successfully! Id="+response.data.IdBar);
                 setTimeout(() => {

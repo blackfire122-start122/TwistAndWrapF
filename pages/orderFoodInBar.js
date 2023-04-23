@@ -28,7 +28,7 @@ const OrderFoodInBar = () => {
             return
         }
 
-        client.post('user/orderFood', {
+        client.post('/orderFood', {
             RestaurantId: selectedRestaurant,
             Foods: selectedFoodIdCount,
             Time: selectedTime
@@ -86,7 +86,7 @@ const OrderFoodInBar = () => {
     };
 
     useEffect(() => {
-        client.get('user/getAllWorkedBars')
+        client.get('/getAllWorkedBars')
             .then((response) => {
                 setRestaurants(response.data);
             })
@@ -96,7 +96,7 @@ const OrderFoodInBar = () => {
     }, []);
 
     useEffect(() => {
-        client.get('user/getAllFoods')
+        client.get('/getAllFoods')
             .then((response) => {
                 setFoods(response.data);
                 setFoodTypes(Array.from(new Set(response.data.map((food) => food.Type))));

@@ -9,7 +9,7 @@ function Login() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await client.post("user/login", JSON.stringify({
+            const response = await client.post("/login", JSON.stringify({
                 username: username,
                 password: password
             }))

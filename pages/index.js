@@ -10,7 +10,7 @@ export default function Home() {
     const [foodTypes, setFoodTypes] = useState([]);
 
     useEffect(() => {
-        client.get("user/getAllFoods")
+        client.get("/getAllFoods")
             .then((response) => {
                 console.log(response.data)
                 setFoods(response.data);
@@ -19,7 +19,7 @@ export default function Home() {
             .catch((error) => {
                 console.log(error);
             });
-        client.get("user/getUser")
+        client.get("/getUser")
             .then((response) => {
             setUser(response.data);
         })

@@ -10,7 +10,7 @@ function Register() {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await client.post('user/register', JSON.stringify({
+            const response = await client.post('/register', JSON.stringify({
                 username,
                 password,
                 email
