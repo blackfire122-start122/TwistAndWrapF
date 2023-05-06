@@ -33,10 +33,10 @@ export default function ProductForm() {
     const handleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData();
-        data.append("Name", formData.name);
-        data.append("Description", formData.description);
-        data.append("Type", formData.type);
-        data.append("File", selectedFile);
+        data.append("name", formData.name);
+        data.append("description", formData.description);
+        data.append("type", formData.type);
+        data.append("file", selectedFile);
 
         client
             .post("admin/createProduct", data, {
@@ -98,8 +98,8 @@ export default function ProductForm() {
                     >
                         <option value="">Select type</option>
                         {types.map((type) => (
-                            <option key={type.Id} value={type.Id}>
-                                {type.Type}
+                            <option key={type.id} value={type.id}>
+                                {type.type}
                             </option>
                         ))}
                     </select>

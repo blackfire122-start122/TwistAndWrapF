@@ -1,12 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import client from "../lib/axios";
 import styles from '../styles/components/OrderFoodInBar.module.css';
-import ReactMapboxGl, { GeoJSONLayer } from "react-mapbox-gl";
-import {console} from "next/dist/compiled/@edge-runtime/primitives/console";
-
-const Map = ReactMapboxGl({
-    accessToken: process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN,
-});
+import mapBoxGl from "mapbox-gl";
 
 const OrderFoodInBar = () => {
     const [selectedRestaurant, setSelectedRestaurant] = useState('');
@@ -17,11 +12,14 @@ const OrderFoodInBar = () => {
     const [searchFood, setSearchFood ] = useState([])
     const [foodTypes, setFoodTypes] = useState([]);
     const [addText, setAddText] = useState("");
+    const mapContainerRef = useRef(null);
+    const markerImageURL = 'http://localhost/static/marker-15.png';
+    const [selectedMarker, setSelectedMarker] = useState(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
-        const selectedFoodIdCount = selectedFood.map(({ Id, Count }) => ({ Id, Count }));
+        const selectedFoodIdCount = selectedFood.map(({ id, count }) => ({ id, count }));
 
         if (selectedFoodIdCount === [] || !selectedRestaurant || selectedTime === ""){
             console.log("error not all field")
@@ -29,9 +27,9 @@ const OrderFoodInBar = () => {
         }
 
         client.post('user/orderFood', {
-            RestaurantId: selectedRestaurant,
-            Foods: selectedFoodIdCount,
-            Time: selectedTime
+            restaurantId: selectedRestaurant,
+            foods: selectedFoodIdCount,
+            time: selectedTime
         })
 
         .then((response) => {
@@ -39,7 +37,7 @@ const OrderFoodInBar = () => {
                 setSelectedRestaurant("")
                 setSelectedFood([])
                 setSelectedTime("")
-                setAddText("Ordered. Your Id: "+response.data.Msg.split(":")[1])
+                setAddText("Ordered. Your Id: "+response.data.msg.split(":")[1])
 
                 setTimeout(()=>{
                     setAddText("")
@@ -59,19 +57,19 @@ const OrderFoodInBar = () => {
     };
 
     const AddFood = (foodId) => {
-        let food = foods.filter(f=> f.Id === foodId)[0]
-        food.Count = "1"
+        let food = foods.filter(f=> f.id === foodId)[0]
+        food.count = "1"
         setSelectedFood([...selectedFood, food]);
     };
 
     const RemoveFood = (foodId) => {
-        const updatedSelectedFood = selectedFood.filter(f => f.Id !== foodId);
+        const updatedSelectedFood = selectedFood.filter(f => f.id !== foodId);
         setSelectedFood(updatedSelectedFood);
         document.getElementById("checkbox"+foodId).checked = false
     };
 
     const handleSearchTermChange = (event) => {
-        setSearchFood(foods.filter(f => f.Name.toLowerCase().includes(event.target.value.toLowerCase())))
+        setSearchFood(foods.filter(f => f.name.toLowerCase().includes(event.target.value.toLowerCase())))
     };
     const handleTimeChange = (event) => {
         setSelectedTime(event.target.value)
@@ -99,13 +97,67 @@ const OrderFoodInBar = () => {
         client.get('user/getAllFoods')
             .then((response) => {
                 setFoods(response.data);
-                setFoodTypes(Array.from(new Set(response.data.map((food) => food.Type))));
+                setFoodTypes(Array.from(new Set(response.data.map((food) => food.type))));
                 setSearchFood(response.data)
             })
             .catch((error) => {
                 console.error(error);
             });
     }, []);
+
+    useEffect(() => {
+        mapBoxGl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+
+        const map = new mapBoxGl.Map({
+            container: mapContainerRef.current,
+            style: 'mapbox://styles/mapbox/dark-v10',
+            center: [31, 49],
+            zoom: 5
+        });
+
+        map.on('load', () => {
+            map.loadImage(markerImageURL, (error, image) => {
+                if (error) throw error;
+
+                map.addImage('marker-icon', image);
+                map.addSource('markers', {
+                    type: 'geojson',
+                    data: {
+                        type: 'FeatureCollection',
+                        features: restaurants.map((r) => ({
+                            type: 'Feature',
+                            properties: r,
+                            geometry: {
+                                type: 'Point',
+                                coordinates: [parseFloat(r.longitude), parseFloat(r.latitude)]
+                            }
+                        }))
+                    }
+                });
+                map.addLayer({
+                    id: 'markers',
+                    type: 'symbol',
+                    source: 'markers',
+                    layout: {
+                        'icon-image': 'marker-icon',
+                        'icon-size': 0.07
+                    }
+                });
+            });
+        });
+
+        map.on('click', (e) => {
+            const features = map.queryRenderedFeatures(e.point);
+            if (features.length > 0 && features[0].layer.id === 'markers') {
+                setSelectedMarker(features[0]);
+                setSelectedRestaurant(features[0].properties.idBar);
+            } else {
+                setSelectedMarker(null);
+            }
+        });
+
+        return () => map.remove(); // Clean up the map instance on unmount
+    }, [restaurants, markerImageURL]);
 
     return (
         <div>
@@ -116,7 +168,7 @@ const OrderFoodInBar = () => {
                         <select className={styles.select} value={selectedRestaurant} onChange={handleRestaurantChange}>
                             <option value="">--Please choose a restaurant--</option>
                             {restaurants.map((r ) => (
-                                <option key={r.Id} value={r.IdBar}>{r.Address}</option>
+                                <option key={r.id} value={r.idBar}>{r.address}</option>
                             ))}
                         </select>
                     </label>
@@ -128,43 +180,7 @@ const OrderFoodInBar = () => {
                     </label>
                 </div>
                 <br/>
-
-                <Map style="mapbox://styles/mapbox/streets-v11"
-                     containerStyle={{
-                         height: "600px",
-                         width: "100%",
-                     }}
-                     center={[31, 49]}
-                     zoom={[5]}
-                >
-                    <GeoJSONLayer
-                        id="point"
-                        data={{
-                            "type": "FeatureCollection",
-                            "features": restaurants.map((r)=>{
-                                return {
-                                    "type": "Feature",
-                                    "geometry": {
-                                        "type": "Point",
-                                        "coordinates": [parseFloat(r.LngLatX), parseFloat(r.LngLatY)]
-                                    },
-                                "properties": {
-                                    "title": "My Point",
-                                    "marker-color": "#FF0000",
-                                    "marker-size": "medium",
-                                    "marker-symbol": ""
-                                }}
-                            })
-                        }}
-                        circleLayout={{ visibility: "visible" }}
-                        circlePaint={{
-                            "circle-radius": 8,
-                            "circle-color": "#FF0000"
-                        }}
-                        onClick={(e)=>{console.log(e)}}
-                    />
-                </Map>
-
+                <div ref={mapContainerRef} className={styles.mapContainer} />
                 <br />
 
                 <div className={styles.searches}>
@@ -188,16 +204,16 @@ const OrderFoodInBar = () => {
                     Select food:
                     <div className={styles.checkboxList}>
                         {searchFood.map((f) => (
-                            <label key={f.Id} className={styles.checkboxListItem}>
-                                {f.Name}
-                                <input id={"checkbox"+f.Id} type="checkbox" className={styles.checkboxInput} onChange={(event)=>{
+                            <label key={f.id} className={styles.checkboxListItem}>
+                                {f.name}
+                                <input id={"checkbox"+f.id} type="checkbox" className={styles.checkboxInput} onChange={(event)=>{
                                     if (event.target.checked) {
-                                        AddFood(f.Id)
+                                        AddFood(f.id)
                                     }else{
-                                        RemoveFood(f.Id)
+                                        RemoveFood(f.id)
                                     }
                                 }} />
-                                <img className={styles.imgFood} src={"http://localhost/"+f.Image} alt={f.Name}/>
+                                <img className={styles.imgFood} src={"http://localhost/"+f.image} alt={f.name}/>
                             </label>
                         ))}
                     </div>
@@ -205,13 +221,13 @@ const OrderFoodInBar = () => {
                 <br/>
                 <ul className={styles.selectedFood}>
                     {selectedFood.map((f) => (
-                        <li key={f.Id} className={styles.selectedFoodItem}>
-                            <p>{f.Name}</p>
-                            <img src={"http://localhost/"+f.Image} alt={f.Name} />
+                        <li key={f.id} className={styles.selectedFoodItem}>
+                            <p>{f.name}</p>
+                            <img src={"http://localhost/"+f.image} alt={f.name} />
                             <input min="1" max="10" placeholder="Count food - 1-10" type="number" onChange={(event)=>{
-                                f.Count = event.target.value
+                                f.count = event.target.value
                             }} />
-                            <button type="button" onClick={() => RemoveFood(f.Id)}>Remove</button>
+                            <button type="button" onClick={() => RemoveFood(f.id)}>Remove</button>
                         </li>
                     ))}
                 </ul>

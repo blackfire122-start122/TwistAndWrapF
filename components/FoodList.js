@@ -7,9 +7,9 @@ function FoodLists({ type, foods }) {
             <h2>{type}</h2>
             <div className={foodListStyles.foodList}>
                 {foods
-                    .filter((food) => food.Type === type)
+                    .filter((food) => food.type === type)
                     .map((food) => (
-                        <FoodItem food={food} key={food.Id}/>
+                        <FoodItem food={food} key={food.id}/>
                     ))}
             </div>
         </div>

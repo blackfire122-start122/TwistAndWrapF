@@ -21,11 +21,11 @@ export default function Profile() {
     }
 
     function UpdateUser(respData){
-        respData.Image = "http://localhost/"+respData.Image
+        respData.Image = "http://localhost/"+respData.image
         setUser(respData);
-        setName(respData.Username)
-        setEmail(respData.Email)
-        setPhone(respData.Phone)
+        setName(respData.username)
+        setEmail(respData.email)
+        setPhone(respData.phone)
     }
     function handleUpdate() {
         const formData = new FormData();
@@ -83,7 +83,7 @@ export default function Profile() {
                 </div>
             </div>
             {
-                user.IsAdmin ? (
+                user.isAdmin ? (
                     <>
                         <Link href="/createProduct">
                             <h4>Create product</h4>

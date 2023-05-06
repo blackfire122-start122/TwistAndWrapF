@@ -8,8 +8,8 @@ export default function BarRegistrationForm() {
         address: "",
         password: "",
         confirmPassword: "",
-        lngLatX: "",
-        lngLatY: "",
+        longitude: "",
+        latitude: "",
     });
 
     const handleInputChange = (event) => {
@@ -29,16 +29,16 @@ export default function BarRegistrationForm() {
         }
 
         const data = {
-            Address: formData.address,
-            Password: formData.password,
-            LngLatX: formData.lngLatX,
-            LngLatY: formData.lngLatY,
+            address: formData.address,
+            password: formData.password,
+            longitude: formData.longitude,
+            latitude: formData.latitude,
         };
 
         client
             .post("admin/registerBar", data)
             .then((response) => {
-                setAddText("Bar registered successfully! Id="+response.data.IdBar);
+                setAddText("Bar registered successfully! Id="+response.data.idBar);
                 setTimeout(() => {
                     setAddText("");
                 }, 5000);
@@ -70,31 +70,31 @@ export default function BarRegistrationForm() {
                     />
                 </div>
                 <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="lngLatX">
+                    <label className={styles.labelForm} htmlFor="longitude">
                         LngLatX:
                     </label>
                     <input
                         className={styles.inputForm}
                         type="number"
                         step="0.001"
-                        id="lngLatX"
-                        name="lngLatX"
-                        value={formData.lngLatX}
+                        id="longitude"
+                        name="longitude"
+                        value={formData.longitude}
                         onChange={handleInputChange}
                         required
                     />
                 </div>
                 <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="lngLatY">
+                    <label className={styles.labelForm} htmlFor="latitude">
                         LngLatY:
                     </label>
                     <input
                         className={styles.inputForm}
                         type="number"
                         step="0.001"
-                        id="lngLatY"
-                        name="lngLatY"
-                        value={formData.lngLatY}
+                        id="latitude"
+                        name="latitude"
+                        value={formData.latitude}
                         onChange={handleInputChange}
                         required
                     />

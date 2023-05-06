@@ -14,7 +14,7 @@ export default function Home() {
             .then((response) => {
                 console.log(response.data)
                 setFoods(response.data);
-                setFoodTypes(Array.from(new Set(response.data.map((food) => food.Type))));
+                setFoodTypes(Array.from(new Set(response.data.map((food) => food.type))));
             })
             .catch((error) => {
                 console.log(error);
@@ -41,7 +41,7 @@ export default function Home() {
                 {
                     user ? (
                         <Link href="/profile">
-                            <img className={styles.picture} src={`http://localhost/${user.Image}`} alt={user.Name} />
+                            <img className={styles.picture} src={`http://localhost/${user.image}`} alt={user.username} />
                         </Link>
                     ) : (
                         <>
