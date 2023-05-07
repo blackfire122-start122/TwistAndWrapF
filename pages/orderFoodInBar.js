@@ -12,9 +12,10 @@ const OrderFoodInBar = () => {
     const [searchFood, setSearchFood ] = useState([])
     const [foodTypes, setFoodTypes] = useState([]);
     const [addText, setAddText] = useState("");
+    const [errorSelectedTime, setErrorSelectedTime] = useState("");
     const mapContainerRef = useRef(null);
     const markerImageURL = 'http://localhost/static/marker-15.png';
-    const [selectedMarker, setSelectedMarker] = useState(null);
+    // const [selectedMarker, setSelectedMarker] = useState(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -72,12 +73,27 @@ const OrderFoodInBar = () => {
         setSearchFood(foods.filter(f => f.name.toLowerCase().includes(event.target.value.toLowerCase())))
     };
     const handleTimeChange = (event) => {
-        setSelectedTime(event.target.value)
+        const currentTime = new Date();
+        currentTime.setMinutes(currentTime.getMinutes() + 5);
+
+        const selectedTime = event.target.value;
+        const selectedDateTime = new Date();
+        const [hours, minutes] = selectedTime.split(':');
+        selectedDateTime.setHours(hours);
+        selectedDateTime.setMinutes(minutes);
+
+        if (selectedDateTime >= currentTime) {
+            setSelectedTime(selectedTime)
+            setErrorSelectedTime("")
+        } else {
+            setErrorSelectedTime("* Invalid time. Please select a valid time")
+            setSelectedTime("")
+        }
     };
 
     const handleSearchTypeChange = (event) => {
         if (event.target.value !== ""){
-            setSearchFood(foods.filter(f => f.Type === event.target.value))
+            setSearchFood(foods.filter(f => f.type === event.target.value))
         }else {
             setSearchFood(foods)
         }
@@ -149,10 +165,10 @@ const OrderFoodInBar = () => {
         map.on('click', (e) => {
             const features = map.queryRenderedFeatures(e.point);
             if (features.length > 0 && features[0].layer.id === 'markers') {
-                setSelectedMarker(features[0]);
+                // setSelectedMarker(features[0]);
                 setSelectedRestaurant(features[0].properties.idBar);
             } else {
-                setSelectedMarker(null);
+                // setSelectedMarker(null);
             }
         });
 
@@ -176,7 +192,12 @@ const OrderFoodInBar = () => {
 
                     <label className={styles.label}>
                         Select Time:
-                        <input className={styles.input} type="time" value={selectedTime} onChange={handleTimeChange} />
+                        <input className={styles.input}
+                               type="time"
+                               value={selectedTime}
+                               onChange={handleTimeChange}
+                        />
+                        <span>{errorSelectedTime}</span>
                     </label>
                 </div>
                 <br/>

@@ -41,6 +41,8 @@ export default function Profile() {
             },
         }).then((response) => {
             UpdateUser(response.data)
+        }).catch((err)=>{
+            console.log(err)
         });
     }
 
