@@ -1,6 +1,9 @@
 import { useState } from "react";
 import styles from "../styles/components/registerBar.module.css";
 import client from "../lib/axios";
+import BarRegistrationFormHeader from "../components/registerBar/BarRegistrationFormHeader";
+import BarRegistrationFormFields from "../components/registerBar/BarRegistrationFormFields";
+import BarRegistrationFormButton from "../components/registerBar/BarRegistrationFormButton";
 
 export default function BarRegistrationForm() {
     const [addText, setAddText] = useState("");
@@ -38,7 +41,7 @@ export default function BarRegistrationForm() {
         client
             .post("admin/registerBar", data)
             .then((response) => {
-                setAddText("Bar registered successfully! Id="+response.data.idBar);
+                setAddText("Bar registered successfully! Id=" + response.data.idBar);
                 setTimeout(() => {
                     setAddText("");
                 }, 5000);
@@ -50,86 +53,13 @@ export default function BarRegistrationForm() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.leftInfo}>
-                {addText ? <span className={styles.SpanAdd}>{addText}</span> : null}
-                <h1>Register a Bar</h1>
-            </div>
+            <BarRegistrationFormHeader addText={addText} />
             <form className={styles.form} onSubmit={handleSubmit}>
-                <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="address">
-                        Address:
-                    </label>
-                    <input
-                        className={styles.inputForm}
-                        type="text"
-                        id="address"
-                        name="address"
-                        value={formData.address}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="longitude">
-                        LngLatX:
-                    </label>
-                    <input
-                        className={styles.inputForm}
-                        type="number"
-                        step="0.001"
-                        id="longitude"
-                        name="longitude"
-                        value={formData.longitude}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="latitude">
-                        LngLatY:
-                    </label>
-                    <input
-                        className={styles.inputForm}
-                        type="number"
-                        step="0.001"
-                        id="latitude"
-                        name="latitude"
-                        value={formData.latitude}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="password">
-                        Password:
-                    </label>
-                    <input
-                        className={styles.inputForm}
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="confirmPassword">
-                        Confirm Password:
-                    </label>
-                    <input
-                        className={styles.inputForm}
-                        type="password"
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <button className={styles.submitButton} type="submit">
-                    Register
-                </button>
+                <BarRegistrationFormFields
+                    formData={formData}
+                    handleInputChange={handleInputChange}
+                />
+                <BarRegistrationFormButton />
             </form>
         </div>
     );
