@@ -1,29 +1,50 @@
 import { useState, useEffect, useRef } from 'react';
 import client from "../lib/axios";
 import styles from '../styles/components/OrderFoodInBar.module.css';
-import mapBoxGl from "mapbox-gl";
+import mapboxGl from "mapbox-gl";
 
 const OrderFoodInBar = () => {
+    const [user, setUser] = useState(null);
     const [selectedRestaurant, setSelectedRestaurant] = useState('');
     const [selectedFood, setSelectedFood] = useState([]);
-    const [selectedTime, setSelectedTime] = useState("");
+    const [selectedTime, setSelectedTime] = useState(getInitialTime());
     const [restaurants, setRestaurants] = useState([]);
     const [foods, setFoods] = useState([]);
     const [searchFood, setSearchFood ] = useState([])
     const [foodTypes, setFoodTypes] = useState([]);
     const [addText, setAddText] = useState("");
     const [errorSelectedTime, setErrorSelectedTime] = useState("");
+    const [error, setError] = useState("");
     const mapContainerRef = useRef(null);
-    const markerImageURL = 'http://localhost/static/marker-15.png';
+    const [mapInstance, setMapInstance] = useState(null)
     // const [selectedMarker, setSelectedMarker] = useState(null);
+
+    function getInitialTime() {
+        const currentTime = new Date();
+        currentTime.setMinutes(currentTime.getMinutes() + 10);
+        return currentTime.toTimeString().slice(0, 5);
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
         const selectedFoodIdCount = selectedFood.map(({ id, count }) => ({ id, count }));
 
-        if (selectedFoodIdCount === [] || !selectedRestaurant || selectedTime === ""){
-            console.log("error not all field")
+        const currentTime = new Date();
+        currentTime.setMinutes(currentTime.getMinutes() + 5);
+
+        const selectedDateTime = new Date();
+        const [hours, minutes] = selectedTime.split(':');
+        selectedDateTime.setHours(hours);
+        selectedDateTime.setMinutes(minutes);
+
+
+        if (!selectedRestaurant || selectedFoodIdCount === []){
+            setError("error not all field")
+            return
+        }else if (selectedDateTime <= currentTime){
+            setError("error not all field")
+            setErrorSelectedTime("* Invalid time. Please select a valid time need set time >= now +5 minutes")
             return
         }
 
@@ -35,20 +56,23 @@ const OrderFoodInBar = () => {
 
         .then((response) => {
             if (response.data !== ""){
+                console.log(response.data)
+                setError("")
                 setSelectedRestaurant("")
                 setSelectedFood([])
-                setSelectedTime("")
+                setSelectedTime(getInitialTime())
                 setAddText("Ordered. Your Id: "+response.data.msg.split(":")[1])
 
                 setTimeout(()=>{
                     setAddText("")
                 }, 5000)
-                
+
             }else {
                 console.warn(response)
             }
         })
         .catch((error) => {
+            setError(error.text)
             console.error(error);
         });
     };
@@ -86,8 +110,8 @@ const OrderFoodInBar = () => {
             setSelectedTime(selectedTime)
             setErrorSelectedTime("")
         } else {
-            setErrorSelectedTime("* Invalid time. Please select a valid time")
-            setSelectedTime("")
+            setErrorSelectedTime("* Invalid time. Please select a valid time need set time >= now +5 minutes")
+            setSelectedTime(getInitialTime())
         }
     };
 
@@ -98,6 +122,12 @@ const OrderFoodInBar = () => {
             setSearchFood(foods)
         }
     };
+
+    useEffect(() => {
+        client.get("user/getUser").then((response) => {
+            setUser(response.data)
+        });
+    }, []);
 
     useEffect(() => {
         client.get('user/getAllWorkedBars')
@@ -122,9 +152,9 @@ const OrderFoodInBar = () => {
     }, []);
 
     useEffect(() => {
-        mapBoxGl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
+        mapboxGl.accessToken = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
-        const map = new mapBoxGl.Map({
+        const map = new mapboxGl.Map({
             container: mapContainerRef.current,
             style: 'mapbox://styles/mapbox/dark-v10',
             center: [31, 49],
@@ -132,7 +162,8 @@ const OrderFoodInBar = () => {
         });
 
         map.on('load', () => {
-            map.loadImage(markerImageURL, (error, image) => {
+            setMapInstance(map);
+            map.loadImage('http://localhost/static/marker-15.png', (error, image) => {
                 if (error) throw error;
 
                 map.addImage('marker-icon', image);
@@ -160,6 +191,43 @@ const OrderFoodInBar = () => {
                     }
                 });
             });
+
+
+            map.loadImage(user.image ? "http://localhost/"+user.image : null, (error, image) => {
+                if (error) throw error;
+
+                const maxImageSize = 100; // Максимальний розмір зображення (ширина та висота)
+                const aspectRatio = image.width / image.height; // Співвідношення сторін зображення
+
+                let markerSize = maxImageSize;
+
+                if (image.width > image.height) {
+                    markerSize = [maxImageSize, maxImageSize / aspectRatio];
+                } else {
+                    markerSize = [maxImageSize * aspectRatio, maxImageSize];
+                }
+
+                map.addImage('user-image', image, { width: markerSize[0], height: markerSize[1] });
+
+                map.addSource('users', {
+                    type: 'geojson',
+                    data: {
+                        type: 'FeatureCollection',
+                        features: []
+                    }
+                });
+
+                map.addLayer({
+                    id: 'users',
+                    type: 'symbol',
+                    source: 'users',
+                    layout: {
+                        // "icon-image": ["concat", "user-marker-icon-", ["get", "id"]],
+                        'icon-image': 'user-image',
+                        'icon-size': 0.07
+                    }
+                });
+            });
         });
 
         map.on('click', (e) => {
@@ -173,7 +241,7 @@ const OrderFoodInBar = () => {
         });
 
         return () => map.remove(); // Clean up the map instance on unmount
-    }, [restaurants, markerImageURL]);
+    }, [restaurants]);
 
     return (
         <div>
@@ -202,6 +270,35 @@ const OrderFoodInBar = () => {
                 </div>
                 <br/>
                 <div ref={mapContainerRef} className={styles.mapContainer} />
+                <div onClick={()=>{
+                    if (navigator.geolocation) {
+                        navigator.geolocation.getCurrentPosition((position)=>{
+                            const { latitude, longitude } = position.coords;
+
+                            mapInstance.setCenter([longitude, latitude]);
+                            mapInstance.setZoom(10)
+                            const source = mapInstance.getSource('users');
+
+                            source.setData({
+                                type: 'FeatureCollection',
+                                features: [
+                                    ...source._data.features,
+                                    {
+                                        type: 'Feature',
+                                        properties: { user: 'user'},
+                                        geometry: {
+                                            type: 'Point',
+                                            coordinates: [longitude, latitude]
+                                        }
+                                    }
+                                ]
+                            });
+
+                        });
+                    }else{
+                        console.log("not location")
+                    }
+                }}>Show me</div>
                 <br />
 
                 <div className={styles.searches}>
@@ -252,6 +349,7 @@ const OrderFoodInBar = () => {
                         </li>
                     ))}
                 </ul>
+                {error ? <span className={styles.error}>{error}</span>:null}
                 <button className={styles.button} type="submit">Order Food</button>
             </form>
             {addText ? <span className={styles.SpanOrdered}>{addText}</span>:null}
@@ -261,3 +359,8 @@ const OrderFoodInBar = () => {
 };
 
 export default OrderFoodInBar;
+
+
+
+
+

@@ -1,4 +1,4 @@
-import foodListStyles from "../styles/components/foodLists.module.css";
+import foodListStyles from "../../styles/components/indexStyles/foodLists.module.css";
 import FoodItem from "./FoodItem";
 
 function FoodLists({ type, foods }) {

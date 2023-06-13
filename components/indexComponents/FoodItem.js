@@ -1,5 +1,5 @@
 import { useState } from "react";
-import foodItemStyles from "../styles/components/foodItem.module.css";
+import foodItemStyles from "../../styles/components/indexStyles/foodItem.module.css";
 
 function FoodItem({ food }) {
     const [showDescription, setShowDescription] = useState(false);

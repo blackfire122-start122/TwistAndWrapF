@@ -57,3 +57,45 @@
     color: red;
     font-weight: bold;
 }
+
+.link {
+    text-decoration: none;
+    font-size: 2em;
+    padding: 10px;
+    margin: 1%;
+    background-color: #0070f3;
+    color: #fff;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.link:hover {
+    background-color: #0053ad;
+}
+
+.links{
+    display: flex;
+    justify-content: space-around;
+}
+
+.successMessage {
+    color: green;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.errorMessage {
+    color: red;
+    margin-top: 10px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+}
+
+.successMessage.success {
+    opacity: 1;
+}
+
+.errorMessage.error {
+    opacity: 1;
+}

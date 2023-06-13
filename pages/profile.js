@@ -9,6 +9,8 @@ export default function Profile() {
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
     const [picture, setPicture] = useState(null);
+    const [updateStatus, setUpdateStatus] = useState(null);
+    const [errorMessage, setErrorMessage] = useState(null);
 
     useEffect(() => {
         client.get("user/getUser").then((response) => {
@@ -35,15 +37,22 @@ export default function Profile() {
         formData.append("Email", email);
         formData.append("Phone", phone);
 
-        client.put("user/changeUser", formData, {
-            headers: {
-                "Content-Type": "multipart/form-data",
-            },
-        }).then((response) => {
-            UpdateUser(response.data)
-        }).catch((err)=>{
-            console.log(err)
-        });
+        client
+            .put("user/changeUser", formData, {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            })
+            .then((response) => {
+                UpdateUser(response.data);
+                setUpdateStatus("success");
+                setErrorMessage(null);
+            })
+            .catch((err) => {
+                console.log(err);
+                setUpdateStatus("error");
+                setErrorMessage("Failed to update user.");
+            });
     }
 
     if (!user) {
@@ -84,16 +93,19 @@ export default function Profile() {
                     <button className={styles.button} onClick={handleUpdate}>Update</button>
                 </div>
             </div>
+            {updateStatus === "success" && <p className={`${styles.successMessage} ${styles.success}`}>User updated successfully.</p>}
+            {updateStatus === "error" && <p className={`${styles.errorMessage} ${styles.error}`}>{errorMessage}</p>}
+
             {
                 user.isAdmin ? (
-                    <>
-                        <Link href="/createProduct">
+                    <div className={styles.links}>
+                        <Link className={styles.link} href="/createProduct">
                             <h4>Create product</h4>
                         </Link>
-                        <Link href="/registerBar">
+                        <Link className={styles.link} href="/registerBar">
                             <h4>Create bar</h4>
                         </Link>
-                    </>
+                    </div>
                 ) : null
             }
         </div>
