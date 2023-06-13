@@ -1,7 +1,12 @@
-import { useState, useEffect, } from "react";
+import React, { useState, useEffect } from "react";
 import client from "../lib/axios";
+import Header from "../components/profile/Header";
+import ProfilePicture from "../components/profile/ProfilePicture";
+import UserDetails from "../components/profile/UserDetails";
+import SuccessMessage from "../components/profile/SuccessMessage";
+import ErrorMessage from "../components/profile/ErrorMessage";
+import AdminLinks from "../components/profile/AdminLinks";
 import styles from "../styles/components/profile.module.css";
-import Link from "next/link";
 
 export default function Profile() {
     const [user, setUser] = useState(null);
@@ -14,7 +19,7 @@ export default function Profile() {
 
     useEffect(() => {
         client.get("user/getUser").then((response) => {
-            UpdateUser(response.data)
+            UpdateUser(response.data);
         });
     }, []);
 
@@ -22,13 +27,14 @@ export default function Profile() {
         setPicture(event.target.files[0]);
     }
 
-    function UpdateUser(respData){
-        respData.Image = "http://localhost/"+respData.image
+    function UpdateUser(respData) {
+        respData.Image = "http://localhost/" + respData.image;
         setUser(respData);
-        setName(respData.username)
-        setEmail(respData.email)
-        setPhone(respData.phone)
+        setName(respData.username);
+        setEmail(respData.email);
+        setPhone(respData.phone);
     }
+
     function handleUpdate() {
         const formData = new FormData();
 
@@ -61,53 +67,23 @@ export default function Profile() {
 
     return (
         <div className={styles.container}>
-            <h1>Profile</h1>
+            <Header />
             <div className={styles.profile}>
-                <img id="userImg" src={user.Image} alt="Profile Picture" className={styles.picture} />
-                <div className={styles.details}>
-                    <div>
-                        <p>Username:</p>
-                        <input className={styles.input} type="text" value={name} onChange={(event) =>{
-                            setName(event.target.value)
-                        }}/>
-                    </div>
-
-                    <div>
-                        <p>Email:</p>
-                        <input className={styles.input} type="email" value={email} onChange={(event) =>{
-                            setEmail(event.target.value)
-                        }}/>
-                    </div>
-
-                    <div>
-                        <p>Phone:</p>
-                        <input className={styles.input} type="text" value={phone} onChange={(event) =>{
-                            setPhone(event.target.value)
-                        }}/>
-                    </div>
-
-                    <div>
-                        <input className={styles.input} type="file" accept="image/*" onChange={handlePictureChange} />
-                    </div>
-
-                    <button className={styles.button} onClick={handleUpdate}>Update</button>
-                </div>
+                <ProfilePicture image={user.Image} />
+                <UserDetails
+                    name={name}
+                    email={email}
+                    phone={phone}
+                    handleNameChange={(event) => setName(event.target.value)}
+                    handleEmailChange={(event) => setEmail(event.target.value)}
+                    handlePhoneChange={(event) => setPhone(event.target.value)}
+                    handlePictureChange={handlePictureChange}
+                    handleUpdate={handleUpdate}
+                />
             </div>
-            {updateStatus === "success" && <p className={`${styles.successMessage} ${styles.success}`}>User updated successfully.</p>}
-            {updateStatus === "error" && <p className={`${styles.errorMessage} ${styles.error}`}>{errorMessage}</p>}
-
-            {
-                user.isAdmin ? (
-                    <div className={styles.links}>
-                        <Link className={styles.link} href="/createProduct">
-                            <h4>Create product</h4>
-                        </Link>
-                        <Link className={styles.link} href="/registerBar">
-                            <h4>Create bar</h4>
-                        </Link>
-                    </div>
-                ) : null
-            }
+            {updateStatus === "success" && <SuccessMessage />}
+            {updateStatus === "error" && <ErrorMessage message={errorMessage} />}
+            {user.isAdmin && <AdminLinks />}
         </div>
     );
 }
