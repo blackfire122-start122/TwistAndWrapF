@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import styles from "../styles/components/createProduct.module.css";
 import client from "../lib/axios";
+import ProductFormHeader from "../components/createProduct/ProductFormHeader";
+import ProductFormFields from "../components/createProduct/ProductFormFields";
+import ProductFormButton from "../components/createProduct/ProductFormButton";
 
 export default function ProductForm() {
     const [types, setTypes] = useState([]);
@@ -45,10 +48,10 @@ export default function ProductForm() {
                 },
             })
             .then((response) => {
-                setAddText("Add "+formData.name)
-                setTimeout(()=>{
-                    setAddText("")
-                }, 5000)
+                setAddText("Add " + formData.name);
+                setTimeout(() => {
+                    setAddText("");
+                }, 5000);
             })
             .catch((error) => {
                 console.log(error);
@@ -57,66 +60,15 @@ export default function ProductForm() {
 
     return (
         <div className={styles.container}>
-            <div className={styles.leftInfo}>
-                {addText ? <span className={styles.SpanAdd}>{addText}</span>:null}
-                <h1>Create Product</h1>
-            </div>
+            <ProductFormHeader addText={addText} />
             <form className={styles.form} onSubmit={handleSubmit}>
-                <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="name">Name:</label>
-                    <input
-                        className={styles.inputForm}
-                        type="text"
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="description">Description:</label>
-                    <input
-                        className={styles.inputForm}
-                        type="text"
-                        id="description"
-                        name="description"
-                        value={formData.description}
-                        onChange={handleInputChange}
-                        required
-                    />
-                </div>
-                <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="type">Type:</label>
-                    <select
-                        className={styles.selectForm}
-                        id="type"
-                        name="type"
-                        value={formData.type}
-                        onChange={handleInputChange}
-                        required
-                    >
-                        <option value="">Select type</option>
-                        {types.map((type) => (
-                            <option key={type.id} value={type.id}>
-                                {type.type}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-                <div className={styles.formGroup}>
-                    <label className={styles.labelForm} htmlFor="file">Image:</label>
-                    <input
-                        className={styles.inputForm}
-                        type="file"
-                        id="file"
-                        name="file"
-                        accept="image/*"
-                        onChange={handleFileChange}
-                        required
-                    />
-                </div>
-                <button className={styles.buttonForm} type="submit">Create</button>
+                <ProductFormFields
+                    formData={formData}
+                    types={types}
+                    handleInputChange={handleInputChange}
+                    handleFileChange={handleFileChange}
+                />
+                <ProductFormButton />
             </form>
         </div>
     );
