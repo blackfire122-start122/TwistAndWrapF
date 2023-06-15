@@ -26,7 +26,13 @@ export default function Profile() {
     function handlePictureChange(event) {
         setPicture(event.target.files[0]);
     }
-
+    async function handleLogout() {
+        try {
+            const response = await client.get("user/logout")
+        } catch (error) {
+            console.error(error);
+        }
+    }
     function UpdateUser(respData) {
         respData.Image = "http://localhost/" + respData.image;
         setUser(respData);
@@ -67,9 +73,9 @@ export default function Profile() {
 
     return (
         <div className={styles.container}>
-            <Header />
+            <Header/>
             <div className={styles.profile}>
-                <ProfilePicture image={user.Image} />
+                <ProfilePicture image={user.Image} handleLogout={handleLogout}/>
                 <UserDetails
                     name={name}
                     email={email}

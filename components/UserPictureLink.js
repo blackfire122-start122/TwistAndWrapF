@@ -3,7 +3,6 @@ import styles from "../styles/components/userPictureLink.module.css";
 import Link from "next/link";
 
 const UserPictureLink = ({user, width, height}) => {
-    user = null
     const pictureStyle = {
         width: width || '150px',
         height: height || '150px',

@@ -21,7 +21,6 @@
     height: 150px;
     border-radius: 50%;
     object-fit: cover;
-    margin-right: 30px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
     transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
@@ -104,4 +103,22 @@
 
 .errorMessage.error {
     opacity: 1;
+}
+
+.logout_btn{
+    font-size: 1.5em;
+    border: none;
+    background-color: red;
+    padding: 8px;
+    border-radius: 5px;
+    margin-top:2%;
+}
+.logout_btn:hover{
+    background-color: #d70000;
+}
+
+.profileLeft{
+    display: flex;
+    flex-direction: column;
+    margin-right: 2%;
 }
