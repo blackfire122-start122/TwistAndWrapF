@@ -1,4 +1,4 @@
-import styles from "../../styles/components/home.module.css";
+import styles from "../styles/components/home.module.css";
 import Link from "next/link";
 
 const OrderFoodButton = () => {

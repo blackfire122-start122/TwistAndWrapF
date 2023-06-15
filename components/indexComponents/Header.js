@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from "../../styles/components/home.module.css";
-import OrderFoodButton from "./OrderFoodButton";
+import OrderFoodButton from "../OrderFoodButton";
 import UserPictureLink from "../UserPictureLink";
 
 const Header = ({user}) => {

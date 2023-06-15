@@ -6,6 +6,7 @@ import ProductFormFields from "../components/createProduct/ProductFormFields";
 import ProductFormButton from "../components/createProduct/ProductFormButton";
 
 export default function ProductForm() {
+    const [user, setUser] = useState(null);
     const [types, setTypes] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
     const [addText, setAddText] = useState("");
@@ -14,6 +15,12 @@ export default function ProductForm() {
         type: "",
         description: "",
     });
+
+    useEffect(() => {
+        client.get("user/getUser").then((response) => {
+            setUser(response.data);
+        });
+    }, []);
 
     useEffect(() => {
         client.get("user/getTypes").then((response) => {
@@ -60,7 +67,7 @@ export default function ProductForm() {
 
     return (
         <div className={styles.container}>
-            <ProductFormHeader addText={addText} />
+            <ProductFormHeader addText={addText} user={user} />
             <form className={styles.form} onSubmit={handleSubmit}>
                 <ProductFormFields
                     formData={formData}

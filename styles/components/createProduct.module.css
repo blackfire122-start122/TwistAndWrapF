@@ -101,8 +101,6 @@
     background-color: #0063cc;
 }
 
-
-
 .leftInfo{
     display: flex;
     flex-direction: column;
@@ -117,4 +115,11 @@
     border-radius: 0.25rem;;
     margin-bottom: 5em;
     width: 50%;
+}
+
+.links{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }

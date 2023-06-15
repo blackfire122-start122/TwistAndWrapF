@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "../styles/components/registerBar.module.css";
 import client from "../lib/axios";
 import BarRegistrationFormHeader from "../components/registerBar/BarRegistrationFormHeader";
@@ -6,6 +6,7 @@ import BarRegistrationFormFields from "../components/registerBar/BarRegistration
 import BarRegistrationFormButton from "../components/registerBar/BarRegistrationFormButton";
 
 export default function BarRegistrationForm() {
+    const [user, setUser] = useState(null);
     const [addText, setAddText] = useState("");
     const [formData, setFormData] = useState({
         address: "",
@@ -14,6 +15,12 @@ export default function BarRegistrationForm() {
         longitude: "",
         latitude: "",
     });
+
+    useEffect(() => {
+        client.get("user/getUser").then((response) => {
+            setUser(response.data);
+        });
+    }, []);
 
     const handleInputChange = (event) => {
         const { name, value } = event.target;
@@ -53,7 +60,7 @@ export default function BarRegistrationForm() {
 
     return (
         <div className={styles.container}>
-            <BarRegistrationFormHeader addText={addText} />
+            <BarRegistrationFormHeader addText={addText} user={user} />
             <form className={styles.form} onSubmit={handleSubmit}>
                 <BarRegistrationFormFields
                     formData={formData}
