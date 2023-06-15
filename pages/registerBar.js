@@ -4,10 +4,11 @@ import client from "../lib/axios";
 import BarRegistrationFormHeader from "../components/registerBar/BarRegistrationFormHeader";
 import BarRegistrationFormFields from "../components/registerBar/BarRegistrationFormFields";
 import BarRegistrationFormButton from "../components/registerBar/BarRegistrationFormButton";
+import {useRouter} from "next/router";
 
 export default function BarRegistrationForm() {
+    const router = useRouter();
     const [user, setUser] = useState(null);
-    const [addText, setAddText] = useState("");
     const [formData, setFormData] = useState({
         address: "",
         password: "",
@@ -48,10 +49,7 @@ export default function BarRegistrationForm() {
         client
             .post("admin/registerBar", data)
             .then((response) => {
-                setAddText("Bar registered successfully! Id=" + response.data.idBar);
-                setTimeout(() => {
-                    setAddText("");
-                }, 5000);
+                router.push("/")
             })
             .catch((error) => {
                 console.log(error);
@@ -60,7 +58,7 @@ export default function BarRegistrationForm() {
 
     return (
         <div className={styles.container}>
-            <BarRegistrationFormHeader addText={addText} user={user} />
+            <BarRegistrationFormHeader user={user} />
             <form className={styles.form} onSubmit={handleSubmit}>
                 <BarRegistrationFormFields
                     formData={formData}

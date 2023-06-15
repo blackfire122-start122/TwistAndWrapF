@@ -7,8 +7,10 @@ import SuccessMessage from "../components/profile/SuccessMessage";
 import ErrorMessage from "../components/profile/ErrorMessage";
 import AdminLinks from "../components/profile/AdminLinks";
 import styles from "../styles/components/profile.module.css";
+import { useRouter } from "next/router";
 
 export default function Profile() {
+    const router = useRouter();
     const [user, setUser] = useState(null);
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
@@ -28,7 +30,8 @@ export default function Profile() {
     }
     async function handleLogout() {
         try {
-            const response = await client.get("user/logout")
+            await client.get("user/logout")
+            await router.push("/login")
         } catch (error) {
             console.error(error);
         }

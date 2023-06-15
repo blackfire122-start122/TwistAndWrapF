@@ -4,12 +4,13 @@ import client from "../lib/axios";
 import ProductFormHeader from "../components/createProduct/ProductFormHeader";
 import ProductFormFields from "../components/createProduct/ProductFormFields";
 import ProductFormButton from "../components/createProduct/ProductFormButton";
+import {useRouter} from "next/router";
 
 export default function ProductForm() {
+    const router = useRouter();
     const [user, setUser] = useState(null);
     const [types, setTypes] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
-    const [addText, setAddText] = useState("");
     const [formData, setFormData] = useState({
         name: "",
         type: "",
@@ -55,10 +56,7 @@ export default function ProductForm() {
                 },
             })
             .then((response) => {
-                setAddText("Add " + formData.name);
-                setTimeout(() => {
-                    setAddText("");
-                }, 5000);
+                router.push("/")
             })
             .catch((error) => {
                 console.log(error);
@@ -67,7 +65,7 @@ export default function ProductForm() {
 
     return (
         <div className={styles.container}>
-            <ProductFormHeader addText={addText} user={user} />
+            <ProductFormHeader user={user} />
             <form className={styles.form} onSubmit={handleSubmit}>
                 <ProductFormFields
                     formData={formData}

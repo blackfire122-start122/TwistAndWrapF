@@ -1,8 +1,10 @@
 import { useState } from "react";
 import client from '../lib/axios';
 import styles from "../styles/components/login.module.css";
+import {useRouter} from "next/router";
 
 function Login() {
+    const router = useRouter();
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,6 +16,7 @@ function Login() {
                 password: password
             }))
             console.log(response.data);
+            await router.push("/")
         } catch (error) {
             console.error(error);
         }
