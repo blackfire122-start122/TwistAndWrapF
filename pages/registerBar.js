@@ -49,7 +49,7 @@ export default function BarRegistrationForm() {
         client
             .post("admin/registerBar", data)
             .then((response) => {
-                router.push("/")
+                router.push("/profile")
             })
             .catch((error) => {
                 console.log(error);

@@ -56,7 +56,7 @@ export default function ProductForm() {
                 },
             })
             .then((response) => {
-                router.push("/")
+                router.push("/profile")
             })
             .catch((error) => {
                 console.log(error);

@@ -8,6 +8,7 @@ import ErrorMessage from "../components/profile/ErrorMessage";
 import AdminLinks from "../components/profile/AdminLinks";
 import styles from "../styles/components/profile.module.css";
 import { useRouter } from "next/router";
+import ListsAdmin from "../components/profile/ListsAdmin";
 
 export default function Profile() {
     const router = useRouter();
@@ -18,11 +19,33 @@ export default function Profile() {
     const [picture, setPicture] = useState(null);
     const [updateStatus, setUpdateStatus] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
+    const [restaurants, setRestaurants] = useState([]);
+    const [foods, setFoods] = useState([]);
 
     useEffect(() => {
         client.get("user/getUser").then((response) => {
             UpdateUser(response.data);
         });
+    }, []);
+
+    useEffect(() => {
+        client.get('user/getAllWorkedBars')
+            .then((response) => {
+                setRestaurants(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+    useEffect(() => {
+        client.get('user/getAllFoods')
+            .then((response) => {
+                setFoods(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }, []);
 
     function handlePictureChange(event) {
@@ -92,7 +115,12 @@ export default function Profile() {
             </div>
             {updateStatus === "success" && <SuccessMessage />}
             {updateStatus === "error" && <ErrorMessage message={errorMessage} />}
-            {user.isAdmin && <AdminLinks />}
+            {user.isAdmin === "true" &&
+                <>
+                    <AdminLinks />
+                    <ListsAdmin restaurants={restaurants} foods={foods} setFoods={setFoods} />
+                </>
+            }
         </div>
     );
 }

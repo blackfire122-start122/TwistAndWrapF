@@ -14,3 +14,7 @@ export default function AdminLinks() {
         </div>
     );
 }
+
+
+// ToDo: Button list product and list bars and delete bar, delete product
+// ToDo: registerBar and create profile redirect to profile page
