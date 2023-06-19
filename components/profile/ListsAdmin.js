@@ -2,8 +2,9 @@ import React, {useEffect, useState} from "react";
 import FoodsAdminList from "./FoodsAdminList";
 import RestaurantsAdminList from "./RestaurantsAdminList";
 import client from "../../lib/axios";
+import styles from "../../styles/components/profile.module.css";
 
-export default function ListsAdmin({ restaurants, foods,setFoods }) {
+export default function ListsAdmin({ restaurants, foods,setFoods,setRestaurants }) {
     const [types, setTypes] = useState([]);
 
     useEffect(() => {
@@ -15,8 +16,10 @@ export default function ListsAdmin({ restaurants, foods,setFoods }) {
 
     return (
         <>
+            <h2 className={styles.nameList}>Foods</h2>
             <FoodsAdminList foods={foods} setFoods={setFoods} types={types}/>
-            <RestaurantsAdminList restaurants={restaurants}/>
+            <h2 className={styles.nameList}>Restaurants</h2>
+            <RestaurantsAdminList restaurants={restaurants} setRestaurants={setRestaurants}/>
         </>
     );
 }

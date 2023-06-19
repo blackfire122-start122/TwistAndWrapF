@@ -29,7 +29,7 @@ export default function Profile() {
     }, []);
 
     useEffect(() => {
-        client.get('user/getAllWorkedBars')
+        client.get('user/getAllBars') // ToDo not worked. Transform foods to restorans
             .then((response) => {
                 setRestaurants(response.data);
             })
@@ -118,7 +118,7 @@ export default function Profile() {
             {user.isAdmin === "true" &&
                 <>
                     <AdminLinks />
-                    <ListsAdmin restaurants={restaurants} foods={foods} setFoods={setFoods} />
+                    <ListsAdmin restaurants={restaurants} foods={foods} setFoods={setFoods} setRestaurants={setRestaurants} />
                 </>
             }
         </div>
