@@ -4,7 +4,7 @@ const SearchFood = ({handleSearchTermChange}) => {
     return (
         <label className={styles.label}>
             Search food:
-            <input className={styles.input} type="text" onChange={handleSearchTermChange} />
+            <input className={styles.input} type="text" onChange={handleSearchTermChange} placeholder="Search food"/>
         </label>
     );
 };

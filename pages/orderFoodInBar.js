@@ -13,7 +13,6 @@ const OrderFoodInBar = () => {
     const [foods, setFoods] = useState([]);
     const [searchFood, setSearchFood ] = useState([])
     const [foodTypes, setFoodTypes] = useState([]);
-    const [addText, setAddText] = useState("");
     const [errorSelectedTime, setErrorSelectedTime] = useState("");
     const [error, setError] = useState("");
 
@@ -54,16 +53,12 @@ const OrderFoodInBar = () => {
 
         .then((response) => {
             if (response.data !== ""){
-                console.log(response.data)
+                console.log(response)
                 setError("")
                 setSelectedRestaurant("")
                 setSelectedFood([])
                 setSelectedTime(getInitialTime())
-                setAddText("Ordered. Your Id: "+response.data.msg.split(":")[1])
-
-                setTimeout(()=>{
-                    setAddText("")
-                }, 5000)
+                // "Ordered. Your Id: "+response.data.Msg.split(":")[1]
 
             }else {
                 console.warn(response)
@@ -172,7 +167,7 @@ const OrderFoodInBar = () => {
                     user={user}
                 />
             </form>
-            {addText ? <span className={styles.SpanOrdered}>{addText}</span>:null}
+
         </div>
     );
 };

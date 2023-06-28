@@ -88,15 +88,12 @@ export default function  MapOrderFood({restaurants,user,setSelectedRestaurant}) 
         map.on('click', (e) => {
             const features = map.queryRenderedFeatures(e.point);
             if (features.length > 0 && features[0].layer.id === 'markers') {
-                // setSelectedMarker(features[0]);
                 setSelectedRestaurant(features[0].properties.idBar);
-            } else {
-                // setSelectedMarker(null);
             }
         });
 
         return () => map.remove(); // Clean up the map instance on unmount
-    }, [restaurants]);
+    }, [restaurants, user]);
 
     const handleShowMeClick = ()=>{
         if (navigator.geolocation) {
@@ -130,8 +127,9 @@ export default function  MapOrderFood({restaurants,user,setSelectedRestaurant}) 
     return (
         <>
             <div ref={mapContainerRef} className={styles.mapContainer} ></div>
-            <button className={styles.showMe} onClick={handleShowMeClick}>Show me</button>
+            <button type="button" className={styles.showMe} onClick={handleShowMeClick}>Show me</button>
         </>
     )
 };
 
+// ToDo image show me need do circle

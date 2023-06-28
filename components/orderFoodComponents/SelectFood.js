@@ -3,7 +3,7 @@ import styles from '../../styles/components/OrderFoodInBar.module.css';
 const SelectFood = ({searchFood,AddFood,RemoveFood}) => {
     return (
         <div>
-            Select food:
+            <p className={styles.selectFoodText}>Select food:</p>
             <div className={styles.checkboxList}>
                 {searchFood.map((f) => (
                     <label key={f.id} className={styles.checkboxListItem}>
