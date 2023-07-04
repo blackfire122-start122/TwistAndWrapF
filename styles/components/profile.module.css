@@ -1,5 +1,4 @@
 .container {
-    max-width: 800px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -12,6 +11,7 @@
 
 .profile {
     display: flex;
+    justify-content: center;
     align-items: center;
     margin-top: 30px;
 }
@@ -251,4 +251,80 @@
 .nameList{
     margin-top: 3%;
     margin-bottom: 1%;
+}
+
+.ordersUser{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 28em;
+    margin: 2%;
+    border-radius: 10px;
+    background-color: #f2f2f2;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.order{
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 13%;
+    height: 22em;
+    width: 25em;
+}
+
+.orderProducts{
+    display: flex;
+    overflow-x: auto;
+}
+
+.productName, .productType, .productCount{
+    width: 100%;
+}
+
+.product{
+    display: flex;
+    flex-direction: column;
+    margin: 2%;
+    align-items: center;
+    width: 15em;
+    padding: 3px;
+}
+
+.product img{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.productDescriptions{
+    overflow: auto;
+    text-overflow: ellipsis;
+    height: 8em;
+}
+
+.productDescriptions::-webkit-scrollbar, .ordersUser::-webkit-scrollbar, .orderProducts::-webkit-scrollbar {
+    width: 8px;
+    background-color: transparent;
+}
+
+.productDescriptions::-webkit-scrollbar-thumb, .ordersUser::-webkit-scrollbar-thumb, .orderProducts::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+    border-radius: 4px;
+}
+
+.productDescriptions::-webkit-scrollbar-thumb:hover, .ordersUser::-webkit-scrollbar-thumb:hover, .orderProducts::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+.orderProducts::-webkit-scrollbar {
+    height: 8px;
+}
+
+.notCreated{
+    background-color: red;
+    border-radius: 20px;
 }

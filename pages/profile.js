@@ -9,6 +9,7 @@ import AdminLinks from "../components/profile/AdminLinks";
 import styles from "../styles/components/profile.module.css";
 import { useRouter } from "next/router";
 import ListsAdmin from "../components/profile/ListsAdmin";
+import OrdersUser from "../components/profile/OrdersUser";
 
 export default function Profile() {
     const router = useRouter();
@@ -20,6 +21,7 @@ export default function Profile() {
     const [updateStatus, setUpdateStatus] = useState(null);
     const [errorMessage, setErrorMessage] = useState(null);
     const [restaurants, setRestaurants] = useState([]);
+    const [orders, setOrders] = useState([]);
     const [foods, setFoods] = useState([]);
 
     useEffect(() => {
@@ -29,7 +31,7 @@ export default function Profile() {
     }, []);
 
     useEffect(() => {
-        client.get('user/getAllBars') // ToDo not worked. Transform foods to restorans
+        client.get('user/getAllBars') // ToDo not worked. Transform foods to bars
             .then((response) => {
                 setRestaurants(response.data);
             })
@@ -42,6 +44,16 @@ export default function Profile() {
         client.get('user/getAllFoods')
             .then((response) => {
                 setFoods(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
+    useEffect(() => {
+        client.get('user/getOrders')
+            .then((response) => {
+                setOrders(response.data);
             })
             .catch((error) => {
                 console.error(error);
@@ -112,7 +124,9 @@ export default function Profile() {
                     handlePictureChange={handlePictureChange}
                     handleUpdate={handleUpdate}
                 />
+                <OrdersUser orders={orders} />  {/*ToDo: need to unite listsCreatedProduct import as OrdersUser*/}
             </div>
+
             {updateStatus === "success" && <SuccessMessage />}
             {updateStatus === "error" && <ErrorMessage message={errorMessage} />}
             {user.isAdmin === "true" &&
