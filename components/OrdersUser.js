@@ -1,13 +1,13 @@
 import React from "react";
-import styles from "../../styles/components/profile.module.css";
+import styles from "../styles/components/ordersUser.module.css";
 
-export default function OrdersUser({orders}) {
+export default function OrdersUser({orders,background="", orderWidth=""}) {
+    console.log(orders)
     return (
-        <div className={styles.ordersUser}>
+        <div className={`${styles.ordersUser} ${background}`}>
             {orders.map((order)=>(
-                    <div key={order.Id} className={styles.order}>
+                    <div key={order.Id} className={`${styles.order} ${orderWidth}`}>
                         <h3>Order Id: {order.OrderId}</h3>
-                        {/*<time>Ordered at time: {new Date(order.OrderTime).toLocaleString()} </time>*/}
                         <time>Ordered at time: {order.OrderTime} </time>
                         <div className={styles.orderProducts}>
                             {order.OrderProducts.map((orderProduct)=> {
@@ -22,7 +22,7 @@ export default function OrdersUser({orders}) {
                                     </div>
                                     ) : (
                                         <div key={orderProduct.ID} className={`${styles.product} ${styles.notCreated}`}>
-                                            <h2 className={styles.productName}>{orderProduct.Product.Name}</h2>
+                                            <h2 className={styles.productName}>Not Created {orderProduct.Product.Name}</h2>
                                             <img src={"http://localhost/" + orderProduct.Product.Image}
                                                  alt={orderProduct.Product.Name}/>
                                             <p className={styles.productDescriptions}>{orderProduct.Product.Description}</p>

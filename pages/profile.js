@@ -9,7 +9,7 @@ import AdminLinks from "../components/profile/AdminLinks";
 import styles from "../styles/components/profile.module.css";
 import { useRouter } from "next/router";
 import ListsAdmin from "../components/profile/ListsAdmin";
-import OrdersUser from "../components/profile/OrdersUser";
+import OrdersUser from "../components/OrdersUser";
 
 export default function Profile() {
     const router = useRouter();
@@ -124,7 +124,7 @@ export default function Profile() {
                     handlePictureChange={handlePictureChange}
                     handleUpdate={handleUpdate}
                 />
-                <OrdersUser orders={orders} />  {/*ToDo: need to unite listsCreatedProduct import as OrdersUser*/}
+                <OrdersUser orders={orders} background={styles.backgroundColorOrdersUser} orderWidth={styles.orderWidthOrdersUser}/>
             </div>
 
             {updateStatus === "success" && <SuccessMessage />}

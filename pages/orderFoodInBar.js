@@ -3,7 +3,7 @@ import client from "../lib/axios";
 import styles from '../styles/components/OrderFoodInBar.module.css';
 import Header from "../components/orderFoodComponents/Header";
 import FormFields from "../components/orderFoodComponents/FormFields";
-import ListCreatedProducts from "../components/orderFoodComponents/ListCreatedProducts";
+import OrdersUser from "../components/OrdersUser";
 
 const OrderFoodInBar = () => {
     const [user, setUser] = useState(null);
@@ -16,7 +16,7 @@ const OrderFoodInBar = () => {
     const [foodTypes, setFoodTypes] = useState([]);
     const [errorSelectedTime, setErrorSelectedTime] = useState("");
     const [error, setError] = useState("");
-    const [createdOrders, setCreatedOrders ] = useState([])
+    const [orders, setOrders] = useState([]);
 
     function getInitialTime() {
         const currentTime = new Date();
@@ -56,16 +56,8 @@ const OrderFoodInBar = () => {
         .then((response) => {
             if (response.data !== ""){
                 setError("")
-                console.log(response)
 
-                let order = {
-                    "msg":response.data.Msg,
-                    "id":response.data.Id,
-                    "productsCreated":response.data.ProductsCreated,
-                    "selectedFood":[...selectedFood]
-                }
-
-                setCreatedOrders((prevCreatedOrders) => [...prevCreatedOrders, order])
+                setOrders((prevOrders) => [...prevOrders, response.data])
 
                 setSelectedRestaurant("")
                 setSelectedFood([])
@@ -154,6 +146,16 @@ const OrderFoodInBar = () => {
             });
     }, []);
 
+    useEffect(() => {
+        client.get('user/getOrders')
+            .then((response) => {
+                setOrders(response.data);
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }, []);
+
     return (
         <div className={styles.container}>
             <Header user={user}/>
@@ -177,7 +179,7 @@ const OrderFoodInBar = () => {
                     user={user}
                 />
             </form>
-            <ListCreatedProducts createdOrders={createdOrders}/>
+            <OrdersUser orders={orders} orderWidth={styles.orderWidthOrdersUser}/>
         </div>
     );
 };
