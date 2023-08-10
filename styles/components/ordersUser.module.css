@@ -9,11 +9,8 @@
     overflow-y: auto;
 }
 
-.order{
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 19%;
-    height: 22em;
+.order time, .order h3{
+    padding: 5px;
 }
 
 .orderProducts{

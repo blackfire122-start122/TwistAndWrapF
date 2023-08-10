@@ -51,7 +51,7 @@ export default function RestaurantsAdminList({ restaurants, setRestaurants }) {
                     ) : (
                         <>
                             <div className={styles.restaurantInfo}>
-                                <img className={styles.changeIcon} src="http://localhost/static/change.png" alt="change restaurant" onClick={() => handleEditRestaurants(r)} />
+                                <img className={styles.changeIcon} src="/static/change.png" alt="change restaurant" onClick={() => handleEditRestaurants(r)} />
                                 <p className={styles.restaurantAddress}>{r.address}</p>
                                 <p>ID Bar: {r.idBar}</p>
                                 <p>Coordinates: {r.longitude} {r.latitude}</p>

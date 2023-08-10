@@ -18,7 +18,7 @@ export default function  MapOrderFood({restaurants,user,setSelectedRestaurant}) 
 
         map.on('load', () => {
             setMapInstance(map);
-            map.loadImage('http://localhost/static/marker-15.png', (error, image) => {
+            map.loadImage('/static/marker-15.png', (error, image) => {
                 if (error) throw error;
 
                 map.addImage('marker-icon', image);
@@ -48,7 +48,7 @@ export default function  MapOrderFood({restaurants,user,setSelectedRestaurant}) 
             });
 
 
-            map.loadImage(user.image ? "http://localhost/"+user.image : null, (error, image) => {
+            map.loadImage(user.image ? user.image : null, (error, image) => {
                 if (error) throw error;
 
                 const maxImageSize = 100; // Максимальний розмір зображення (ширина та висота)

@@ -6,7 +6,7 @@ const SelectedFood = ({selectedFood,RemoveFood}) => {
             {selectedFood.map((f) => (
                 <li key={f.id} className={styles.selectedFoodItem}>
                     <p>{f.name}</p>
-                    <img src={"http://localhost/"+f.image} alt={f.name} />
+                    <img src={f.image} alt={f.name} />
                     <input min="1" max="10" placeholder="Count food - 1-10" type="number" onChange={(event)=>{
                         f.count = event.target.value
                     }} />

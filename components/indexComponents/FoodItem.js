@@ -11,7 +11,7 @@ function FoodItem({ food }) {
     return (
         <div className={foodItemStyles["food-item"]} onClick={handleClick}>
             <h3>{food.Name}</h3>
-            <img src={"http://localhost/" + food.image} alt={food.name} />
+            <img src={food.image} alt={food.name} />
             {showDescription ? <p>{food.description}</p> : null}
         </div>
     );

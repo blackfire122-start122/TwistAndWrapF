@@ -10,7 +10,7 @@ const HomeLink = ({width, height}) => {
 
     return (
         <Link href="/">
-            <img className={styles.picture} src="http://localhost/static/home.png" alt="home" style={pictureStyle} />
+            <img className={styles.picture} src="/static/home.png" alt="home" style={pictureStyle} />
         </Link>
     );
 };

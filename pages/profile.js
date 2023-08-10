@@ -72,7 +72,7 @@ export default function Profile() {
         }
     }
     function UpdateUser(respData) {
-        respData.Image = "http://localhost/" + respData.image;
+        respData.Image = respData.image;
         setUser(respData);
         setName(respData.username);
         setEmail(respData.email);

@@ -14,7 +14,7 @@ export default function OrdersUser({orders,background="", orderWidth=""}) {
                                 return orderProduct.Status !== "not created" ? (
                                     <div key={orderProduct.ID} className={styles.product}>
                                         <h2 className={styles.productName}>{orderProduct.Product.Name}</h2>
-                                        <img src={"http://localhost/" + orderProduct.Product.Image}
+                                        <img src={orderProduct.Product.Image}
                                              alt={orderProduct.Product.Name}/>
                                         <p className={styles.productDescriptions}>{orderProduct.Product.Description}</p>
                                         <p className={styles.productType}>Type: {orderProduct.Product.Type}</p>
@@ -23,7 +23,7 @@ export default function OrdersUser({orders,background="", orderWidth=""}) {
                                     ) : (
                                         <div key={orderProduct.ID} className={`${styles.product} ${styles.notCreated}`}>
                                             <h2 className={styles.productName}>Not Created {orderProduct.Product.Name}</h2>
-                                            <img src={"http://localhost/" + orderProduct.Product.Image}
+                                            <img src={orderProduct.Product.Image}
                                                  alt={orderProduct.Product.Name}/>
                                             <p className={styles.productDescriptions}>{orderProduct.Product.Description}</p>
                                             <p className={styles.productType}>Type: {orderProduct.Product.Type}</p>

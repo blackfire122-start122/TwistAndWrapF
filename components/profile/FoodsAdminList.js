@@ -53,8 +53,8 @@ export default function FoodsAdminList({ foods, types, setFoods }) {
                         <>
                             <p className={styles.foodName}>{f.name}</p>
                             <div className={styles.foodImageContainer}>
-                                <img className={styles.foodImage} src={"http://localhost/" + f.image} alt={f.name} />
-                                <img className={styles.changeIcon} src="http://localhost/static/change.png" alt="change food" onClick={() => handleEditFood(f)} />
+                                <img className={styles.foodImage} src={f.image} alt={f.name} />
+                                <img className={styles.changeIcon} src="/static/change.png" alt="change food" onClick={() => handleEditFood(f)} />
                             </div>
                             <button className={styles.delete_btn} onClick={() => handleDeleteFood(f.id)}>
                                 Delete

@@ -12,7 +12,7 @@ const UserPictureLink = ({user, width, height}) => {
             {
                 user ? (
                     <Link href="/profile">
-                        <img className={styles.picture} src={`http://localhost/${user.image}`} alt={user.username} style={pictureStyle} />
+                        <img className={styles.picture} src={user.image} alt={user.username} style={pictureStyle} />
                     </Link>
                 ) : (
                     <div className={styles.linkContainer}>

@@ -15,7 +15,7 @@ const SelectFood = ({searchFood,AddFood,RemoveFood}) => {
                                 RemoveFood(f.id)
                             }
                         }} />
-                        <img className={styles.imgFood} src={"http://localhost/"+f.image} alt={f.name}/>
+                        <img className={styles.imgFood} src={f.image} alt={f.name}/>
                     </label>
                 ))}
             </div>
