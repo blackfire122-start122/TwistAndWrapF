@@ -8,6 +8,7 @@ export default function OrdersUser({orders,background="", orderWidth=""}) {
                     <div key={order.Id} className={`${styles.order} ${orderWidth}`}>
                         <h3>Order Id: {order.OrderId}</h3>
                         <time>Ordered at time: {order.OrderTime} </time>
+                        <p>In bar {order.BarAddress} </p>
                         <div className={styles.orderProducts}>
                             {order.OrderProducts.map((orderProduct)=> {
                                 return orderProduct.Status !== "not created" ? (

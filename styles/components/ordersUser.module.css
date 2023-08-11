@@ -9,8 +9,9 @@
     overflow-y: auto;
 }
 
-.order time, .order h3{
+.order time, .order h3, .order p{
     padding: 5px;
+    width: 100%;
 }
 
 .orderProducts{
@@ -71,7 +72,6 @@
     background-color: red;
     border-radius: 20px;
 }
-
 
 .anythingOrder{
     padding: 10px;

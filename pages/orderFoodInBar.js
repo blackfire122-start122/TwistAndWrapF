@@ -149,7 +149,9 @@ const OrderFoodInBar = () => {
     useEffect(() => {
         client.get('user/getOrders')
             .then((response) => {
-                setOrders(response.data);
+                if (response.data){
+                    setOrders(response.data);
+                }
             })
             .catch((error) => {
                 console.error(error);
