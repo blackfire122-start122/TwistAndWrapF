@@ -2,10 +2,9 @@ import React from "react";
 import styles from "../styles/components/ordersUser.module.css";
 
 export default function OrdersUser({orders,background="", orderWidth=""}) {
-    console.log(orders)
     return (
         <div className={`${styles.ordersUser} ${background}`}>
-            {orders.map((order)=>(
+            {orders ? orders.map((order)=>(
                     <div key={order.Id} className={`${styles.order} ${orderWidth}`}>
                         <h3>Order Id: {order.OrderId}</h3>
                         <time>Ordered at time: {order.OrderTime} </time>
@@ -34,7 +33,10 @@ export default function OrdersUser({orders,background="", orderWidth=""}) {
                             }
                         </div>
                     </div>
-                ))}
+                ))
+            :
+                <h3 className={styles.anythingOrder}>You have not ordered anything</h3>
+            }
         </div>
     );
 }

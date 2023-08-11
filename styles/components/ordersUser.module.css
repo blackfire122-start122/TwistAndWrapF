@@ -71,3 +71,14 @@
     background-color: red;
     border-radius: 20px;
 }
+
+
+.anythingOrder{
+    padding: 10px;
+    text-align: center;
+    width: 70%;
+    color: gray;
+    position: relative;
+    right: 0;
+    margin: auto;
+}
