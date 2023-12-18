@@ -20,7 +20,7 @@ export default function BarRegistrationFormFields({ formData, handleInputChange 
             </div>
             <div className={styles.formGroup}>
                 <label className={styles.labelForm} htmlFor="longitude">
-                    LngLatX:
+                    Longitude:
                 </label>
                 <input
                     className={styles.inputForm}
@@ -35,7 +35,7 @@ export default function BarRegistrationFormFields({ formData, handleInputChange 
             </div>
             <div className={styles.formGroup}>
                 <label className={styles.labelForm} htmlFor="latitude">
-                    LngLatY:
+                    Latitude:
                 </label>
                 <input
                     className={styles.inputForm}

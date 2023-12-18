@@ -31,7 +31,7 @@ export default function  MapOrderFood({restaurants,user,setSelectedRestaurant}) 
                             properties: r,
                             geometry: {
                                 type: 'Point',
-                                coordinates: [parseFloat(r.longitude), parseFloat(r.latitude)]
+                                coordinates: [parseFloat(r.latitude), parseFloat(r.longitude)]
                             }
                         }))
                     }
